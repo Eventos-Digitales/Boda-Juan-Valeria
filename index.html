@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>La Boda del Año | Juan & Valeria</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --vino: #4a0e1c;
+            --vino-oscuro: #2a050f;
+            --oro: #d4af37;
+            --oro-brillante: #f9d976;
+            --texto-claro: #fcfbf9;
+            --texto-muted: #e0d5c1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--texto-claro);
+            background: linear-gradient(135deg, var(--vino-oscuro) 0%, var(--vino) 100%);
+            overflow-x: hidden;
+            background-attachment: fixed;
+        }
+
+        /* --- POLVO DE ESTRELLAS DE FONDO --- */
+        .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .particle {
+            position: absolute; width: 4px; height: 4px; background: var(--oro-brillante);
+            border-radius: 50%; box-shadow: 0 0 10px var(--oro-brillante);
+            animation: float-up 10s infinite linear; opacity: 0;
+        }
+        @keyframes float-up {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.5; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        /* --- TIPOGRAFÍAS DE LUJO --- */
+        .cursiva { font-family: 'Great Vibes', cursive; font-weight: normal; }
+        .epico { font-family: 'Cinzel', serif; letter-spacing: 2px; text-transform: uppercase; }
+        
+        .titulo-seccion { font-size: 45px; color: var(--oro-brillante); text-align: center; text-shadow: 2px 2px 8px rgba(0,0,0,0.4); margin-bottom: 10px; line-height: 1.2; }
+        .subtitulo-rollo { font-size: 13px; text-align: center; font-style: italic; color: var(--texto-muted); margin-bottom: 30px; font-weight: 300; line-height: 1.6; padding: 0 10px; }
+
+        /* --- PANTALLA DE APERTURA (EL SELLO) --- */
+        #intro-pantalla {
+            position: fixed; inset: 0; background: var(--vino-oscuro); z-index: 10000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+        }
+        .sello-wrap { position: relative; cursor: pointer; text-align: center; }
+        .sello-cera {
+            width: 120px; height: 120px; border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #8a1a33, #4a0e1c);
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 10px 25px rgba(0,0,0,0.5), 0 0 0 4px var(--oro);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 48px; color: var(--oro-brillante);
+            animation: latido-sello 2s infinite; transition: all 0.5s;
+        }
+        .sello-wrap:hover .sello-cera { transform: scale(1.05); box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 10px 25px rgba(0,0,0,0.5), 0 0 20px 5px var(--oro-brillante); }
+        .toque-texto { margin-top: 30px; font-size: 16px; color: var(--oro); animation: fade-in-out 2s infinite; }
+        
+        #flash-luz { position: fixed; inset: 0; background: #fff; z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.8s; }
+
+        @keyframes latido-sello {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        @keyframes fade-in-out { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+        /* --- CONTENEDORES Y ANIMACIONES SCROLL --- */
+        .wrapper { position: relative; z-index: 10; width: 90%; max-width: 650px; margin: 0 auto; padding-bottom: 80px; }
+        section { padding: 50px 0; }
+        
+        .reveal { opacity: 0; transform: translateY(50px) scale(0.95); transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
+
+        .reveal-right { opacity: 0; transform: translateX(50px); transition: all 1s ease-out; }
+        .reveal-right.active { opacity: 1; transform: translateX(0); }
+
+        .reveal-left { opacity: 0; transform: translateX(-50px); transition: all 1s ease-out; }
+        .reveal-left.active { opacity: 1; transform: translateX(0); }
+
+        /* --- PORTADA PRINCIPAL --- */
+        .portada { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .fecha-epica { font-size: 14px; color: var(--oro); letter-spacing: 5px; margin-bottom: 20px; text-shadow: 1px 1px 5px rgba(0,0,0,0.5); }
+        .nombres-gigantes { font-size: 90px; color: var(--oro-brillante); line-height: 0.8; text-shadow: 3px 3px 15px rgba(0,0,0,0.6); margin-bottom: 10px; }
+        .y-cursiva { font-size: 60px; color: #fff; margin: -10px 0; }
+        .frase-portada { font-size: 18px; margin-top: 30px; line-height: 1.4; color: var(--texto-claro); max-width: 80%; }
+
+        /* --- TARJETAS INTERACTIVAS (GLASSMORPHISM DE LUJO) --- */
+        .tarjeta-lujo {
+            background: rgba(42, 5, 15, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 15px; padding: 40px 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4); text-align: center; margin-bottom: 30px;
+            transition: transform 0.4s, box-shadow 0.4s; position: relative; overflow: hidden;
+        }
+        .tarjeta-lujo::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 60%);
+            opacity: 0; transition: opacity 0.5s; pointer-events: none;
+        }
+        .tarjeta-lujo:hover { transform: translateY(-5px); box-shadow: 0 20px 45px rgba(0,0,0,0.6), 0 0 15px rgba(212, 175, 55, 0.2); }
+        .tarjeta-lujo:hover::before { opacity: 1; }
+
+        /* --- BOTONES PASADOS DE LANZA --- */
+        .btn-magico {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            background: linear-gradient(45deg, var(--oro), #f9d976, var(--oro)); background-size: 200% auto;
+            color: var(--vino-oscuro); font-family: 'Cinzel', serif; font-weight: 700; font-size: 13px;
+            padding: 15px 30px; border-radius: 50px; border: none; text-decoration: none;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); transition: 0.4s; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 1px; width: 100%; max-width: 280px; margin: 10px auto;
+        }
+        .btn-magico:hover { background-position: right center; transform: scale(1.05); box-shadow: 0 10px 25px rgba(212, 175, 55, 0.6); }
+        
+        .btn-outline { background: transparent; border: 1px solid var(--oro); color: var(--oro-brillante); box-shadow: none; }
+        .btn-outline:hover { background: rgba(212, 175, 55, 0.1); border-color: var(--oro-brillante); color: #fff; }
+
+        /* --- CONTADOR --- */
+        .contador-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px; }
+        .caja-tiempo { background: rgba(0,0,0,0.3); border: 1px solid rgba(212,175,55,0.2); border-radius: 10px; padding: 15px 5px; }
+        .num-tiempo { font-family: 'Cinzel', serif; font-size: 32px; color: var(--oro-brillante); display: block; }
+        .txt-tiempo { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; }
+
+        /* --- HISTORIA --- */
+        .historia-caja { padding: 20px 0; border-bottom: 1px solid rgba(212,175,55,0.2); }
+        .historia-caja:last-child { border-bottom: none; }
+        .historia-fecha { font-size: 35px; color: var(--oro); }
+
+        /* --- LUGARES SEPARADOS --- */
+        .lugar-decoracion { font-size: 30px; color: var(--oro); margin-bottom: -15px; z-index: 1; position: relative; }
+        .mapa-iframe { width: 100%; height: 220px; border-radius: 10px; margin: 20px 0; border: 2px solid rgba(212,175,55,0.2); filter: sepia(30%) hue-rotate(320deg); transition: 0.5s; }
+        .mapa-iframe:hover { border-color: var(--oro); filter: none; }
+        
+        .botones-mapa { display: flex; flex-direction: column; gap: 10px; }
+
+        /* --- FORMULARIOS --- */
+        .input-bello {
+            width: 100%; background: rgba(0,0,0,0.2); border: 1px solid rgba(212,175,55,0.3);
+            color: #fff; font-family: inherit; font-size: 14px; padding: 15px; border-radius: 8px;
+            margin-bottom: 15px; outline: none; transition: 0.3s;
+        }
+        .input-bello:focus { border-color: var(--oro-brillante); box-shadow: 0 0 10px rgba(212,175,55,0.3); background: rgba(0,0,0,0.4); }
+        .input-bello::placeholder { color: rgba(255,255,255,0.4); }
+
+        /* --- REPRODUCTOR DE MÚSICA --- */
+        .btn-musica {
+            position: fixed; bottom: 20px; right: 20px; width: 55px; height: 55px;
+            background: radial-gradient(circle, var(--oro-brillante), var(--oro));
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-size: 24px; color: var(--vino-oscuro); z-index: 9999;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5); border: 2px solid #fff; cursor: pointer;
+        }
+        .girando { animation: spin 4s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="particles" id="particles-bg"></div>
+
+    <div id="flash-luz"></div>
+    <div id="intro-pantalla">
+        <h2 class="cursiva" style="font-size: 50px; color: var(--oro); margin-bottom: 40px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8);">Un amor escrito en las estrellas...</h2>
+        <div class="sello-wrap" onclick="romperSello()">
+            <div class="sello-cera cursiva">J&V</div>
+        </div>
+        <div class="epico toque-texto">Toca el sello para descubrirlo</div>
+    </div>
+
+    <div class="btn-musica" id="musica-btn" onclick="toggleMusica()">📀</div>
+    <audio id="musica-fondo" loop>
+        <source src="https://www.dropbox.com/scl/fi/qbbbvj5glh3ze2iiw8y8l/Christina-Perri-A-Thousand-Years-Piano-Cello-Cover-The-Piano-Guys.m4a?rlkey=r370gckquyzqdumjg345xfx6y&st=u7pk6l3y&raw=1" type="audio/mp4">
+    </audio>
+
+    <div class="wrapper">
+        
+        <section class="portada reveal">
+            <div class="fecha-epica">25 DE OCTUBRE DE 2026</div>
+            <div class="nombres-gigantes cursiva">Juan</div>
+            <div class="cursiva y-cursiva">&</div>
+            <div class="nombres-gigantes cursiva">Valeria</div>
+            <p class="frase-portada cursiva" style="font-size: 32px; color: var(--oro-brillante);">"Y de pronto, todas las canciones de amor hablaban de ti..."</p>
+            <button class="btn-magico" style="margin-top: 40px;" onclick="agendar()">Agendar este día inolvidable</button>
+        </section>
+
+        <section class="reveal">
+            <div class="tarjeta-lujo">
+                <h2 class="cursiva titulo-seccion">Nuestras Raíces</h2>
+                <p class="subtitulo-rollo">Bajo el cobijo del Altísimo y sostenidos por el inmenso amor, paciencia y ejemplo incondicional de los seres que nos dieron la vida, tenemos el supremo honor de invitarles a nuestra consagración.</p>
+                
+                <div style="margin: 30px 0;">
+                    <div class="epico" style="font-size: 11px; color: var(--oro); margin-bottom: 5px;">Acompañados por los padres de la novia</div>
+                    <div class="cursiva" style="font-size: 35px; color: #fff;">María López y Carlos Hernández</div>
+                </div>
+                
+                <div style="margin: 30px 0;">
+                    <div class="epico" style="font-size: 11px; color: var(--oro); margin-bottom: 5px;">Y los padres del novio</div>
+                    <div class="cursiva" style="font-size: 35px; color: #fff;">Laura Martínez y Roberto Gómez</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="reveal">
+            <div class="tarjeta-lujo" style="background: rgba(0,0,0,0.4); border-color: transparent;">
+                <h2 class="cursiva titulo-seccion">El Instante Anhelado</h2>
+                <p class="subtitulo-rollo">Cada segundo que pasa es un latido más que nos acerca al altar. La eternidad nos espera al final de esta cuenta:</p>
+                <div class="contador-grid">
+                    <div class="caja-tiempo"><span class="num-tiempo" id="dias">00</span><span class="txt-tiempo">Días</span></div>
+                    <div class="caja-tiempo"><span class="num-tiempo" id="horas">00</span><span class="txt-tiempo">Hrs</span></div>
+                    <div class="caja-tiempo"><span class="num-tiempo" id="mins">00</span><span class="txt-tiempo">Min</span></div>
+                    <div class="caja-tiempo"><span class="num-tiempo" id="segs">00</span><span class="txt-tiempo">Seg</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="reveal">
+            <h2 class="cursiva titulo-seccion" style="font-size: 55px;">Nuestra Odisea</h2>
+            <p class="subtitulo-rollo">No fue coincidencia, estaba escrito en los astros. Así se tejieron las páginas de nuestro destino mágico:</p>
+            
+            <div class="tarjeta-lujo reveal-left">
+                <div class="historia-fecha cursiva">El Primer Vistazo (2020)</div>
+                <div class="epico" style="font-size: 14px; color: var(--oro-brillante); margin: 5px 0;">Cuando el tiempo se detuvo</div>
+                <p style="font-size: 14px; font-weight: 300; line-height: 1.5;">Bastó cruzar una mirada para que el universo entero hiciera sentido. En ese microsegundo, nuestras almas se reconocieron de vidas pasadas.</p>
+            </div>
+
+            <div class="tarjeta-lujo reveal-right">
+                <div class="historia-fecha cursiva">Nuestra Aventura (2022)</div>
+                <div class="epico" style="font-size: 14px; color: var(--oro-brillante); margin: 5px 0;">Conquistando el mundo juntos</div>
+                <p style="font-size: 14px; font-weight: 300; line-height: 1.5;">Entre risas, viajes y madrugadas enteras platicando, descubrimos que el hogar no es un lugar, sino unos brazos donde siempre quieres regresar.</p>
+            </div>
+
+            <div class="tarjeta-lujo reveal-left">
+                <div class="historia-fecha cursiva">La Promesa Eterna (2024)</div>
+                <div class="epico" style="font-size: 14px; color: var(--oro-brillante); margin: 5px 0;">El "Sí" más hermoso del universo</div>
+                <p style="font-size: 14px; font-weight: 300; line-height: 1.5;">Con el cielo de testigo, el corazón a punto de estallar de emoción y una sortija brillando bajo la luna... decidimos ser uno solo para toda la eternidad.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="cursiva titulo-seccion" style="font-size: 60px;">Dónde y Cuándo</h2>
+            <p class="subtitulo-rollo">Tu presencia es el regalo más invaluable. Acompáñanos en los escenarios donde escribiremos el capítulo más hermoso de nuestras vidas.</p>
+
+            <div class="tarjeta-lujo reveal-right">
+                <div class="lugar-decoracion cursiva">✧ El Altar de Nuestra Promesa ✧</div>
+                <h3 class="epico" style="font-size: 24px; color: var(--oro-brillante); margin-top: 20px;">Ceremonia Religiosa</h3>
+                <p style="font-size: 14px; margin: 15px 0; font-weight: 300;"><strong>Parroquia San José, Apodaca</strong><br>El instante más sagrado, donde recibiremos la bendición celestial a las <strong>5:00 PM</strong> en punto.</p>
+                <iframe class="mapa-iframe" src="https://maps.google.com/maps?q=Parroquia+San+Jose+Apodaca&t=&z=15&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy"></iframe>
+                <div class="botones-mapa">
+                    <a href="https://maps.google.com/?q=Parroquia+San+Jose+Apodaca" target="_blank" class="btn-magico btn-outline">🗺️ Trazar ruta en Maps</a>
+                    <a href="https://waze.com/ul?q=Parroquia+San+Jose+Apodaca" target="_blank" class="btn-magico btn-outline">🚗 Llegar con Waze</a>
+                </div>
+            </div>
+
+            <div class="tarjeta-lujo reveal-left">
+                <div class="lugar-decoracion cursiva">✧ El Brindis de Nuestra Vida ✧</div>
+                <h3 class="epico" style="font-size: 24px; color: var(--oro-brillante); margin-top: 20px;">La Gran Recepción</h3>
+                <p style="font-size: 14px; margin: 15px 0; font-weight: 300;"><strong>Salón Jardín Real, Apodaca</strong><br>La noche es joven y el amor infinito. Te esperamos a las <strong>7:30 PM</strong> para el banquete, el brindis y la fiesta hasta el amanecer.</p>
+                <iframe class="mapa-iframe" src="https://maps.google.com/maps?q=Salon+Jardin+Real+Apodaca&t=&z=15&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy"></iframe>
+                <div class="botones-mapa">
+                    <a href="https://maps.google.com/?q=Salon+Jardin+Real+Apodaca" target="_blank" class="btn-magico btn-outline">🗺️ Trazar ruta en Maps</a>
+                    <a href="https://waze.com/ul?q=Salon+Jardin+Real+Apodaca" target="_blank" class="btn-magico btn-outline">🚗 Llegar con Waze</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="reveal">
+            <div class="tarjeta-lujo">
+                <h2 class="cursiva titulo-seccion">Código de Etiqueta</h2>
+                <div class="epico" style="font-size: 22px; color: var(--oro); margin: 15px 0; letter-spacing: 4px;">Formal Riguroso</div>
+                <p style="font-size: 14px; font-weight: 300; margin-bottom: 20px; line-height: 1.6;">Ansiamos verlos lucir espectaculares en nuestra noche mágica. Traje oscuro impecable para ellos, vestidos largos y deslumbrantes para ellas.</p>
+                <p style="font-size: 12px; color: #ff9999; font-style: italic;">* Les rogamos de todo corazón reservar los tonos blancos, marfil y perla exclusivamente para la radiante novia.</p>
+                
+                <hr style="border: 0; border-top: 1px solid rgba(212,175,55,0.3); margin: 30px 0;">
+                
+                <h2 class="cursiva titulo-seccion" style="font-size: 40px;">Notas de Amor</h2>
+                <div style="text-align: left; font-size: 14px; font-weight: 300;">
+                    <p style="color: var(--oro-brillante); font-weight: 600;">✦ ¿Podemos llevar pequeños?</p>
+                    <p style="margin-bottom: 15px;">Deseamos que disfruten esta velada sin preocupaciones. Hemos preparado una fiesta exquisita exclusivamente para adultos. ¡Agradecemos su comprensión profunda!</p>
+                    
+                    <p style="color: var(--oro-brillante); font-weight: 600;">✦ Estacionamiento y Seguridad</p>
+                    <p>El Salón Jardín Real cuenta con amplio estacionamiento privado y resguardado para que su única ocupación sea celebrar a nuestro lado.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="reveal">
+            <div class="tarjeta-lujo" style="background: rgba(212, 175, 55, 0.05);">
+                <h2 class="cursiva titulo-seccion">Sinfonía de la Noche</h2>
+                <p class="subtitulo-rollo" style="margin-bottom: 15px;">¿Cuál es esa canción que te hace vibrar, cantar a todo pulmón o sacar tus mejores pasos prohibidos? Dinos qué no puede faltar.</p>
+                <button class="btn-magico" onclick="pedirCancion()">🎵 Sugerir Temazo</button>
+            </div>
+
+            <div class="tarjeta-lujo reveal" style="margin-top: 30px;">
+                <h2 class="cursiva titulo-seccion">Libro de Firmas</h2>
+                <p class="subtitulo-rollo" style="margin-bottom: 15px;">Déjanos unas palabras que alimenten nuestro corazón en esta nueva aventura. Las leeremos en nuestra luna de miel.</p>
+                <textarea class="input-bello" id="texto-deseo" rows="3" placeholder="Queridos Juan y Valeria..."></textarea>
+                <button class="btn-magico" onclick="guardarDeseo()">Inmortalizar Mensaje</button>
+            </div>
+        </section>
+
+        <section class="reveal">
+            <div class="tarjeta-lujo">
+                <h2 class="cursiva titulo-seccion" style="font-size: 55px;">Reserva tu Lugar</h2>
+                <p class="subtitulo-rollo">Nuestra celebración no estaría completa si faltara tu sonrisa. Por favor, confírmanos que serás testigo de nuestra eternidad.</p>
+                
+                <input type="text" id="nombre-invitado" class="input-bello" placeholder="Tu nombre y apellidos...">
+                
+                <select id="pases-invitado" class="input-bello">
+                    <option value="" disabled selected>Lugares de honor a confirmar...</option>
+                    <option value="1">1 Asiento Espectacular</option>
+                    <option value="2">2 Asientos Espectaculares</option>
+                    <option value="3">3 Asientos Espectaculares</option>
+                    <option value="4">4 Asientos Espectaculares</option>
+                </select>
+                
+                <button class="btn-magico" style="margin-top: 20px; font-size: 15px;" onclick="enviarWhats()">✓ Confirmar Mi Asistencia</button>
+            </div>
+        </section>
+        
+        <div class="cursiva" style="text-align: center; font-size: 50px; color: var(--oro-brillante); margin-top: 50px; text-shadow: 2px 2px 5px rgba(0,0,0,0.5);">Gracias por ser parte de nuestra historia</div>
+
+    </div>
+
+    <script>
+        // GENERADOR DE PARTÍCULAS
+        const bg = document.getElementById('particles-bg');
+        for(let i=0; i<30; i++){
+            let p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            p.style.animationDelay = Math.random() * 5 + 's';
+            bg.appendChild(p);
+        }
+
+        // APERTURA MÁGICA
+        function romperSello() {
+            const flash = document.getElementById('flash-luz');
+            const intro = document.getElementById('intro-pantalla');
+            
+            // Efecto de flash y desaparición
+            flash.style.opacity = '1';
+            setTimeout(() => {
+                intro.style.transform = 'scale(1.5)';
+                intro.style.opacity = '0';
+            }, 300);
+
+            setTimeout(() => {
+                flash.style.opacity = '0';
+                intro.style.display = 'none';
+            }, 1000);
+
+            // Iniciar la música automáticamente
+            const musica = document.getElementById('musica-fondo');
+            const btnMusica = document.getElementById('musica-btn');
+            musica.volume = 0;
+            musica.play().then(() => {
+                btnMusica.classList.add('girando');
+                let vol = 0;
+                let fade = setInterval(() => {
+                    if(vol < 0.8) { vol += 0.05; musica.volume = vol; }
+                    else { clearInterval(fade); }
+                }, 100);
+            }).catch(e => console.log("El usuario debe interactuar primero"));
+        }
+
+        // CONTROL DE MÚSICA
+        function toggleMusica() {
+            const m = document.getElementById('musica-fondo');
+            const b = document.getElementById('musica-btn');
+            if(m.paused){
+                m.play();
+                b.classList.add('girando');
+            } else {
+                m.pause();
+                b.classList.remove('girando');
+            }
+        }
+
+        // ANIMACIONES AL HACER SCROLL (INTERSECTION OBSERVER)
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.15 });
+        
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+
+        // CONTADOR DE TIEMPO
+        const fechaBoda = new Date("Oct 25, 2026 17:00:00").getTime();
+        setInterval(() => {
+            const ahora = new Date().getTime();
+            const dist = fechaBoda - ahora;
+            document.getElementById("dias").innerText = Math.floor(dist / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+            document.getElementById("horas").innerText = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            document.getElementById("mins").innerText = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            document.getElementById("segs").innerText = Math.floor((dist % (1000 * 60)) / 1000).toString().padStart(2, '0');
+        }, 1000);
+
+        // FUNCIONALIDAD DE BOTONES
+        function agendar() {
+            window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=La+Boda+de+Juan+y+Valeria&dates=20261025T170000Z/20261026T020000Z`);
+        }
+
+        function pedirCancion() {
+            const c = prompt("¿Qué rola es indispensable en la pista de baile?");
+            if(c) alert("¡Ufff! Ya la apuntamos. Se va a descontrolar con esa rola.");
+        }
+
+        function guardarDeseo() {
+            const val = document.getElementById('texto-deseo').value;
+            if(val.trim()){
+                alert("Tus hermosas palabras han quedado selladas en nuestra historia. ¡Gracias de corazón!");
+                document.getElementById('texto-deseo').value = "";
+            } else {
+                alert("No seas tímido, escríbenos alguito bonito.");
+            }
+        }
+
+        function enviarWhats() {
+            const nom = document.getElementById('nombre-invitado').value.trim();
+            const pases = document.getElementById('pases-invitado').value;
+            if(nom && pases){
+                const msj = `¡Familia! Confirmo la asistencia de ${encodeURIComponent(nom)} ocupando ${pases} lugares de honor. ¡Qué emoción acompañarlos en este gran día!`;
+                window.open(`https://wa.me/528132654324?text=${msj}`);
+            } else {
+                alert("Por favor, ayúdanos con tu nombre y cuántos pases necesitas para reservarte el mejor lugar.");
+            }
+        }
+    </script>
+</body>
+</html>
